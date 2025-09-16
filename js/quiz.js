@@ -58,6 +58,7 @@ function showQuestion() {
   document.getElementById("answer").addEventListener("keypress", e => {
     if (e.key === "Enter") checkAnswer(answerKeys);
   });
+  input.focus();
 }
 
 function checkAnswer(answerKeys) {
@@ -85,5 +86,6 @@ function startReview() {
   randomOrder = [...Array(words.length).keys()].sort(() => Math.random() - 0.5);
   showQuestion();
 }
+
 
 window.addEventListener("DOMContentLoaded", initQuiz);
