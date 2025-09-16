@@ -60,7 +60,8 @@ function showQuestion() {
   document.getElementById("answer").addEventListener("keypress", e => {
     if (e.key === "Enter") checkAnswer(answerKeys);
   });
-  input.focus();
+  
+  setTimeout(() => input.focus(), 0);
 }
 
 function checkAnswer(answerKeys) {
@@ -91,4 +92,5 @@ function startReview() {
 
 
 window.addEventListener("DOMContentLoaded", initQuiz);
+
 
