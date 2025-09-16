@@ -137,6 +137,38 @@ td {
   background: #111;
 }
 
+input[type="text"], 
+input[type="number"], 
+textarea {
+  width: 80%;
+  max-width: 600px;
+  padding: 16px;
+  font-size: 20px;
+  border-radius: 10px;
+  border: 1px solid #444;
+  background: #222;
+  color: #fff;
+  margin: 0 auto 15px auto;
+  display: block;
+}
+
+.home-btn {
+  display: inline-block;
+  padding: 14px 28px;
+  margin-top: 20px;
+  border-radius: 10px;
+  font-size: 18px;
+  font-weight: bold;
+  text-decoration: none;
+  background: #4dabf7;
+  color: #fff;
+  transition: background 0.3s;
+}
+
+.home-btn:hover {
+  background: #339af0;
+}
+
 @media (max-width: 768px) {
   .grid {
     grid-template-columns: 1fr;
