@@ -47,13 +47,15 @@ function showQuestion() {
   const answerKeys = mode === "en-ko" ? q.meaning : [q.term];
 
   document.getElementById("quiz").innerHTML = `
-    <h2>문제 ${currentIndex+1} / ${words.length}</h2>
-    <div class="progress-bar"><div class="progress" style="width:${((currentIndex+1)/words.length)*100}%"></div></div>
-    <p><b>${questionText}</b></p>
-    <input type="text" id="answer" placeholder="정답 입력" autofocus enterkeyhint="done">
-    <button onclick='checkAnswer(${JSON.stringify(answerKeys)})'>확인</button>
-    <div id="result"></div>
-  `;
+  <h2>문제 ${currentIndex+1} / ${words.length}</h2>
+  <div class="progress-bar"><div class="progress" style="width:${((currentIndex+1)/words.length)*100}%"></div></div>
+  <p><b>${questionText}</b></p>
+  <div class="answer-wrap">
+    <input type="text" id="answer" placeholder="정답 입력" enterkeyhint="done">
+    <button class="check-btn" onclick='checkAnswer(${JSON.stringify(answerKeys)})'>확인</button>
+  </div>
+  <div id="result"></div>
+`;
 
   document.getElementById("answer").addEventListener("keypress", e => {
     if (e.key === "Enter") checkAnswer(answerKeys);
@@ -89,3 +91,4 @@ function startReview() {
 
 
 window.addEventListener("DOMContentLoaded", initQuiz);
+
