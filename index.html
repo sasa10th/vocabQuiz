@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <title>영어 단어 학습</title>
+  <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🂱 영어 단어 학습</h1>
+
+    <div class="grid">
+      <div class="left-col">
+        <div class="card">
+          <h3>🗁 단어장 선택</h3>
+          <select id="wordSet">
+            <option value="words.csv">기본 단어</option>
+          </select>
+        </div>
+
+        <div class="card">
+          <h3>☞ 모드 선택</h3>
+          <div class="mode-options">
+            <label class="checkbox-btn">
+              <input type="checkbox" id="mode-enko" checked>
+              <span>영어 → 한국어</span>
+            </label>
+            <label class="checkbox-btn">
+              <input type="checkbox" id="mode-koen">
+              <span>한국어 → 영어</span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <div class="right-col">
+        <div class="card">
+          <h3>▷ 시작하기</h3>
+          <button class="big-btn" onclick="goQuiz()">퀴즈 시작</button>
+          <button class="big-btn" onclick="goStudy()">단어 보기</button>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script src="./js/common.js"></script>
+  <script src="./js/main.js"></script>
+</body>
+</html>
