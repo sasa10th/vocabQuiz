@@ -56,8 +56,8 @@ function showQuestion() {
   </div>
   <div id="result"></div>
 `;
-
-  document.getElementById("answer").addEventListener("keypress", e => {
+  const input = document.getElementById("answer");
+  input.addEventListener("keypress", e => {
     if (e.key === "Enter") checkAnswer(answerKeys);
   });
   
@@ -92,6 +92,7 @@ function startReview() {
 
 
 window.addEventListener("DOMContentLoaded", initQuiz);
+
 
 
 
