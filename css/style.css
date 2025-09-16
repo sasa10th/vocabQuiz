@@ -188,6 +188,7 @@ textarea {
 
 .answer-wrap input[type="text"] {
   flex: 1;
+  max-width: 500px;
 }
 
 .check-btn {
@@ -208,4 +209,5 @@ textarea {
   box-shadow: 0 0 15px rgba(116,192,252,0.8), 0 0 25px rgba(51,154,240,0.6);
   transform: translateY(-2px);
 }
+
 
