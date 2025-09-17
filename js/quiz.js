@@ -1,5 +1,5 @@
 let currentIndex = 0, wrongList = [], mode = "en-ko", randomOrder = [];
-let originalWords = [];
+let originalWords = [], words = [];
 
 async function initQuiz() {
   const filename = localStorage.getItem("wordSet");
@@ -13,11 +13,7 @@ async function initQuiz() {
   words = await loadCSV(filename);
   originalWords = [...words];
 
-  if (selectedMode === "mixed") {
-    mode = Math.random() > 0.5 ? "en-ko" : "ko-en";
-  } else {
-    mode = selectedMode;
-  }
+  mode = selectedMode;
 
   startQuiz();
 }
@@ -43,24 +39,32 @@ function showQuestion() {
   }
 
   const q = words[randomOrder[currentIndex]];
-  const questionText = mode === "en-ko" ? q.term : q.meaning.join("; ");
-  const answerKeys = mode === "en-ko" ? q.meaning : [q.term];
+
+  // 문제마다 모드 결정
+  let currentMode = mode;
+  if (mode === "mixed") {
+    currentMode = Math.random() > 0.5 ? "en-ko" : "ko-en";
+  }
+
+  const questionText = currentMode === "en-ko" ? q.term : q.meaning.join("; ");
+  const answerKeys = currentMode === "en-ko" ? q.meaning : [q.term];
 
   document.getElementById("quiz").innerHTML = `
-  <h2>문제 ${currentIndex+1} / ${words.length}</h2>
-  <div class="progress-bar"><div class="progress" style="width:${((currentIndex+1)/words.length)*100}%"></div></div>
-  <p><b>${questionText}</b></p>
-  <div class="answer-wrap">
-    <input type="text" id="answer" placeholder="정답 입력" enterkeyhint="done">
-    <button class="check-btn" onclick='checkAnswer(${JSON.stringify(answerKeys)})'>확인</button>
-  </div>
-  <div id="result"></div>
-`;
+    <h2>문제 ${currentIndex+1} / ${words.length}</h2>
+    <div class="progress-bar"><div class="progress" style="width:${((currentIndex+1)/words.length)*100}%"></div></div>
+    <p><b>${questionText}</b></p>
+    <div class="answer-wrap">
+      <input type="text" id="answer" placeholder="정답 입력" enterkeyhint="done">
+      <button class="check-btn" onclick='checkAnswer(${JSON.stringify(answerKeys)})'>확인</button>
+    </div>
+    <div id="result"></div>
+  `;
+
   const input = document.getElementById("answer");
   input.addEventListener("keypress", e => {
     if (e.key === "Enter") checkAnswer(answerKeys);
   });
-  
+
   setTimeout(() => input.focus(), 0);
 }
 
@@ -90,9 +94,4 @@ function startReview() {
   showQuestion();
 }
 
-
 window.addEventListener("DOMContentLoaded", initQuiz);
-
-
-
-
