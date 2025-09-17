@@ -1,5 +1,9 @@
-let currentIndex = 0, wrongList = [], mode = "en-ko", randomOrder = [];
-let originalWords = [], words = [];
+let currentIndex = 0;
+let wrongList = [];
+let mode = "en-ko";
+let randomOrder = [];
+let originalWords = [];
+let quizWords = [];
 
 async function initQuiz() {
   const filename = localStorage.getItem("wordSet");
@@ -10,8 +14,8 @@ async function initQuiz() {
     return;
   }
 
-  words = await loadCSV(filename);
-  originalWords = [...words];
+  quizWords = await loadCSV(filename);
+  originalWords = [...quizWords];
 
   mode = selectedMode;
 
@@ -21,12 +25,12 @@ async function initQuiz() {
 function startQuiz() {
   currentIndex = 0;
   wrongList = [];
-  randomOrder = [...Array(words.length).keys()].sort(() => Math.random() - 0.5);
+  randomOrder = [...Array(quizWords.length).keys()].sort(() => Math.random() - 0.5);
   showQuestion();
 }
 
 function showQuestion() {
-  if (currentIndex >= words.length) {
+  if (currentIndex >= quizWords.length) {
     let resultHtml = "<h2>모든 문제 완료!</h2>";
     if (wrongList.length > 0) {
       resultHtml += `<p>틀린 문제: ${wrongList.length}개</p>`;
@@ -38,21 +42,21 @@ function showQuestion() {
     return;
   }
 
-  const q = words[randomOrder[currentIndex]];
+  const q = quizWords[randomOrder[currentIndex]];
 
-  // 문제마다 모드 결정
-  let currentMode = mode;
-  if (mode === "mixed") {
-    currentMode = Math.random() > 0.5 ? "en-ko" : "ko-en";
-  }
+  let currentMode = mode === "mixed"
+    ? (Math.random() < 0.5 ? "en-ko" : "ko-en")
+    : mode;
 
   const questionText = currentMode === "en-ko" ? q.term : q.meaning.join("; ");
   const answerKeys = currentMode === "en-ko" ? q.meaning : [q.term];
 
   document.getElementById("quiz").innerHTML = `
-    <h2>문제 ${currentIndex+1} / ${words.length}</h2>
-    <div class="progress-bar"><div class="progress" style="width:${((currentIndex+1)/words.length)*100}%"></div></div>
-    <p><b>${questionText}</b></p>
+    <h2>문제 ${currentIndex + 1} / ${quizWords.length}</h2>
+    <div class="progress-bar">
+      <div class="progress" style="width:${((currentIndex + 1) / quizWords.length) * 100}%"></div>
+    </div>
+    <p><b>${questionText}</b> <span style="font-size:12px;opacity:.6">(${currentMode})</span></p>
     <div class="answer-wrap">
       <input type="text" id="answer" placeholder="정답 입력" enterkeyhint="done">
       <button class="check-btn" onclick='checkAnswer(${JSON.stringify(answerKeys)})'>확인</button>
@@ -71,7 +75,7 @@ function showQuestion() {
 function checkAnswer(answerKeys) {
   const userAns = document.getElementById("answer").value.trim();
   const result = document.getElementById("result");
-  const currentWord = words[randomOrder[currentIndex]];
+  const currentWord = quizWords[randomOrder[currentIndex]];
   const expandedKeys = answerKeys.flatMap(ans => expandAnswers(ans));
 
   if (expandedKeys.some(ans => ans.toLowerCase() === userAns.toLowerCase())) {
@@ -81,16 +85,18 @@ function checkAnswer(answerKeys) {
     wrongList.push(currentWord);
   }
 
-  document.querySelector(".progress").style.width = `${((currentIndex+1)/words.length)*100}%`;
+  document.querySelector(".progress").style.width =
+    `${((currentIndex + 1) / quizWords.length) * 100}%`;
+
   currentIndex++;
   setTimeout(showQuestion, 2000);
 }
 
 function startReview() {
-  words = wrongList;
+  quizWords = wrongList;
   currentIndex = 0;
   wrongList = [];
-  randomOrder = [...Array(words.length).keys()].sort(() => Math.random() - 0.5);
+  randomOrder = [...Array(quizWords.length).keys()].sort(() => Math.random() - 0.5);
   showQuestion();
 }
 
